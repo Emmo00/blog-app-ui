@@ -6,6 +6,8 @@ import RegisterView from "@/views/RegisterView.vue";
 import LoginView from "@/views/LoginView.vue";
 import BlogEditView from "@/views/BlogEditView.vue";
 import BlogView from "@/views/BlogView.vue";
+import { loggedIn } from "@/utils/requests";
+import auth from "@/utils/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +53,13 @@ const router = createRouter({
       component: NotFoundView,
     },
   ],
+});
+
+router.beforeEach(async (to, from, next) => {
+  const isLoggedIn = await loggedIn();
+  if (isLoggedIn) auth.login();
+  else auth.logout();
+  next()
 });
 
 export default router;

@@ -1,3 +1,12 @@
+<script setup>
+import { loggedIn } from '../utils/requests'
+import { ref, onBeforeMount } from 'vue';
+import auth from '@/utils/auth'
+
+
+const isLoggedIn = ref(auth.isAuthenticated);
+</script>
+
 <template>
     <header class="bg-gray-900 text-white py-4 px-6 md:px-8 lg:px-10">
         <div class="container mx-auto flex items-center justify-between">
@@ -18,10 +27,24 @@
                         </svg>
                     </button>
                 </form> -->
-                <RouterLink to="/dashboard"
-                    class="bg-gray-800 hover:bg-gray-700 text-white rounded-md py-2 px-4 transition-colors">
-                    Dashboard
-                </RouterLink>
+                <div v-if="isLoggedIn">
+                    <RouterLink to="/dashboard"
+                        class="bg-gray-800 hover:bg-gray-700 text-white rounded-md py-2 px-4 transition-colors">
+                        Dashboard
+                    </RouterLink>
+                </div>
+                <div v-else>
+                    <div class="flex gap-4">
+                        <RouterLink to="/login"
+                            class="bg-gray-600 hover:bg-gray-500 text-white rounded-md py-2 px-4 transition-colors">
+                            Login
+                        </RouterLink>
+                        <RouterLink to="/register"
+                            class="bg-blue-700 hover:bg-blue-600 text-white rounded-md py-2 px-4 transition-colors">
+                            Register
+                        </RouterLink>
+                    </div>
+                </div>
             </div>
         </div>
     </header>

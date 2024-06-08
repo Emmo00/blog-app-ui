@@ -3,7 +3,7 @@
         <div class="container mx-auto flex items-center justify-between">
             <RouterLink to="/" class="text-xl font-bold"> MyBlog </RouterLink>
             <div class="flex items-center space-x-4">
-                <form class="relative">
+                <!-- <form class="relative">
                     <input
                         class="flex h-10 w-full border border-input text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-800 text-white rounded-md py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-gray-600"
                         placeholder="Search posts..." type="search" />
@@ -17,7 +17,7 @@
                             <path d="m21 21-4.3-4.3"></path>
                         </svg>
                     </button>
-                </form>
+                </form> -->
                 <RouterLink to="/dashboard"
                     class="bg-gray-800 hover:bg-gray-700 text-white rounded-md py-2 px-4 transition-colors">
                     Dashboard

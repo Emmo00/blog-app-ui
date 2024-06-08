@@ -1,19 +1,42 @@
 <script setup>
 import NavBarComponent from '@/components/NavBarComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
+import persisty from 'persisty'
 
+console.log(import.meta.env.VITE_SERVER_URL)
 const editorConfig = {
-    events: {
-        initialized: () => {
-            console.log('editor ready')
-        }
-
-    }
+    key: "8JF3bB2B6A4D2B3E2C1zdgmoxmcjmC-7iB2zA-13iG5G4E3E3A1B8D6D4F4F4==",
+    toolbarButtons: [["bold", "italic", "underline",], ["insertImage", 'insertVideo', 'codeView', 'code']],
+    imageUploadURL: import.meta.env.VITE_SERVER_URL + '/images',
+    imageUploadMethod: 'POST',
+    imageUploadParams: { 'user_id': persisty.user_id }
 }
 const blogTitle = ref('');
+const blogThumbnail = ref();
+const blogMainImage = ref();
+const blogMainImageURL = ref('')
 const blogDescription = ref("");
 const blogContent = ref('')
+
+
+function handleThumbnailUpload(event) {
+    blogThumbnail.value = event.target.files[0];
+}
+
+function handleMainImageUpload(event) {
+    blogMainImage.value = event.target.files[0]
+    if (blogMainImage.value) blogMainImageURL.value = URL.createObjectURL(blogMainImage.value)
+}
+
+function submitForm() {
+    const formData = new FormData();
+    formData.append('title', blogTitle.value)
+    formData.append('title', blogTitle.value)
+    formData.append('title', blogTitle.value)
+    formData.append('title', blogTitle.value)
+    formData.append('title', blogTitle.value)
+}
 
 </script>
 <template>
@@ -38,7 +61,7 @@ const blogContent = ref('')
                 </label>
                 <input
                     class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    id="thumbnail" type="file" />
+                    id="thumbnail" type="file" @change="handleThumbnailUpload" />
             </div>
             <div class="grid gap-2">
                 <label
@@ -48,10 +71,11 @@ const blogContent = ref('')
                 </label>
                 <input
                     class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    id="mainImage" type="file" />
+                    id="mainImage" type="file" @change="handleMainImageUpload" />
             </div>
             <div class="grid gap-2">
-                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                <label
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     for="title">
                     Short Description
                 </label>
@@ -60,10 +84,19 @@ const blogContent = ref('')
                     id="title" placeholder="Enter blog description" type="text" v-model="blogDescription" />
             </div>
             <div class="rounded-lg">
-                <div class="p-4 prose prose-gray dark:prose-invert">
+                <label
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    for="title">
+                    Content
+                </label>
+                <div class="prose prose-gray dark:prose-invert">
                     <froala id="edit" :tag="'textarea'" :config="editorConfig" v-model:value="blogContent"></froala>
                 </div>
                 {{ blogContent }}
+            </div>
+            <div>
+                <button class="w-full bg-blue-900 text-slate-50 p-2 rounded-md hover:bg-blue-700"
+                    @click="submitForm">Publish</button>
             </div>
         </div>
         <div class="space-y-6">
@@ -72,6 +105,12 @@ const blogContent = ref('')
                     Preview
                 </h1>
                 <h1>{{ blogTitle }}</h1>
+                <div>
+                    <img v-if="blogMainImage" :src="blogMainImageURL" :alt="blogTitle">
+                </div>
+                <div>
+                    {{ blogDescription }}
+                </div>
                 <div>
                     <froalaView v-model:value="blogContent"></froalaView>
                 </div>

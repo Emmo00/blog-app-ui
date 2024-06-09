@@ -9,15 +9,19 @@ import { getUserArticles } from '@/utils/requests';
 import { showToast } from "@/utils/toast";
 
 const userBlogPosts = ref([])
+const noBlogPosts = ref(false);
 const router = useRouter();
+const pagination = ref({})
 
-async function populateUserDashboard() {
+async function populateUserDashboard(page) {
     try {
-        let response = await getUserArticles();
+        let response = await getUserArticles(page);
         if (response.status === 401) { router.push('/login?redirect=/dashboard'); return; }
         if (!response.ok) { showToast("Error", "An Error Occurred", false); return; }
         response = await response.json()
         let blogsPosts = response.data.data;
+        pagination.value = response.data;
+        if (blogsPosts.length === 0) noBlogPosts.value = true
         blogsPosts = blogsPosts.map((blog) => {
             blog.thumbnail = import.meta.env.VITE_SERVER_URL + '/storage/' + blog.thumbnail;
             return blog
@@ -51,12 +55,13 @@ onMounted(() => {
                         New Article
                     </RouterLink>
                 </div>
+                <div v-if="noBlogPosts" class="font-bold text-2xl text-center py-8">No Blog Posts yet.</div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     <BlogPreviewDashboard v-for="blogPost in userBlogPosts" :key="blogPost.id" :id="blogPost.id"
                         :title="blogPost.title" :description="blogPost.description" :thumbnail="blogPost.thumbnail"
                         @blog-post-deleted="populateUserDashboard" />
                 </div>
-                <PaginationComponent />
+                <PaginationComponent v-if="!noBlogPosts" :pagination="pagination" @new-page="populateUserDashboard"/>
             </section>
         </main>
         <FooterComponent />

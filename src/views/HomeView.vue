@@ -7,10 +7,12 @@ import { getExploreArticles } from '@/utils/requests'
 import { ref } from 'vue';
 
 const exploreBlogPosts = ref([]);
+const pagination = ref({})
 
-async function populateHomePage() {
-    const response = await getExploreArticles();
+async function populateHomePage(page) {
+    const response = await getExploreArticles(page);
     let blogsPosts = response.data.data;
+    pagination.value = response.data
     blogsPosts = blogsPosts.map((blog) => {
         blog.thumbnail = import.meta.env.VITE_SERVER_URL + '/storage/' + blog.thumbnail;
         return blog
@@ -33,7 +35,7 @@ populateHomePage()
                 <BlogPreviewComponent v-for="blogPost in exploreBlogPosts" :key="blogPost.id" :title="blogPost.title"
                     :description="blogPost.description" :thumbnail="blogPost.thumbnail" />
             </div>
-            <PaginationComponent />
+            <PaginationComponent :pagination="pagination" @new-page="populateHomePage"/>
         </section>
     </main>
     <FooterComponent />

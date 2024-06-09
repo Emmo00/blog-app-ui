@@ -1,29 +1,90 @@
 # blog-app-ui
 
-This template should help get you started developing with Vue 3 in Vite.
+Blog Application UI in vue
 
-## Recommended IDE Setup
+## Prerequisites
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Make sure you have the following installed on your system:
 
-## Customize configuration
+- [Node.js](https://nodejs.org/en/download/) (version 12.x or higher recommended)
+- [npm](https://www.npmjs.com/get-npm) (comes with Node.js) or [Yarn](https://yarnpkg.com/)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## Getting Started
 
-## Project Setup
+Follow these steps to set up the project on your local machine.
 
-```sh
+### 1. Clone the Repository
+
+First, clone the repository from GitHub to your local machine:
+
+```bash
+git clone https://github.com/emmo00/blog-app-ui.git
+```
+
+### 2. Navigate to the Project Directory
+
+Change into the project directory:
+
+```bash
+cd blog-app-ui
+```
+
+### Configure Environment Variables
+
+Copy the `.env.example` file to `.env`:
+
+```bash
+cp .env.example .env
+```
+
+### 3. Install Dependencies
+
+Install the necessary dependencies using npm or Yarn:
+
+Using npm:
+
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 4. Run the Development Server
 
-```sh
+Start the development server to run the application locally:
+
+Using npm:
+
+```bash
 npm run dev
 ```
 
-### Compile and Minify for Production
+The application should now be running at [http://localhost:5173](http://localhost:5173).
 
-```sh
-npm run build
+## Project Structure
+
+Here is an overview of the project structure:
+
+```py
+blog-app-ui
+├── node_modules        # Project dependencies
+├── public              # Public assets
+├── src                 # Source files
+│   ├── assets          # Static assets
+|   ├── utils           # Utility files/functions
+|   ├── router          # Vue router config file
+│   ├── components      # Vue components
+│   ├── views           # Vue views/pages
+│   ├── App.vue         # Root component
+│   └── main.js         # Main JavaScript file
+├── .gitignore          # Files to ignore in git
+├── package.json        # Project configuration and dependencies
+├── README.md           # Project setup and documentation
+└── vue.config.js       # Vue CLI configuration (optional)
 ```
+
+## Contributing
+
+Contributions are welcome, just clone and make a PR.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.

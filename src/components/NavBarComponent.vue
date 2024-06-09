@@ -1,10 +1,18 @@
 <script setup>
-import { loggedIn } from '../utils/requests'
-import { ref, onBeforeMount } from 'vue';
+import { ref } from 'vue';
 import auth from '@/utils/auth'
+import { logout } from '@/utils/requests';
+import { useRouter } from 'vue-router';
 
 
+const router = useRouter()
 const isLoggedIn = ref(auth.isAuthenticated);
+const onDashboard = ref(location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/blog'))
+
+async function handleLogout() {
+    await logout();
+    router.push('/');
+}
 </script>
 
 <template>
@@ -28,10 +36,14 @@ const isLoggedIn = ref(auth.isAuthenticated);
                     </button>
                 </form> -->
                 <div v-if="isLoggedIn">
-                    <RouterLink to="/dashboard"
+                    <RouterLink to="/dashboard" v-if="!onDashboard"
                         class="bg-gray-800 hover:bg-gray-700 text-white rounded-md py-2 px-4 transition-colors">
                         Dashboard
                     </RouterLink>
+                    <button @click="handleLogout" v-else
+                        class="bg-red-700 hover:bg-orange-600 text-white rounded-md py-2 px-4 transition-colors">
+                        logout
+                    </button>
                 </div>
                 <div v-else>
                     <div class="flex gap-4">

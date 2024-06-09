@@ -1,18 +1,25 @@
 import persisty from "persisty";
+import { showToast } from "../utils/toast";
 
 const API_TOKEN = persisty.api_token;
 const BASE_URL = import.meta.env.VITE_SERVER_URL + "/api";
 
 async function makeRequest(url, method, body, otherHeaders) {
-  return await fetch(BASE_URL + url, {
-    method,
-    body,
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${API_TOKEN}`,
-      ...otherHeaders,
-    },
-  });
+  try {
+    return await fetch(BASE_URL + url, {
+      method,
+      body,
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${API_TOKEN}`,
+        ...otherHeaders,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    showToast("Error", "an error occurred, please check your internet", false);
+    return {};
+  }
 }
 
 export async function loggedIn() {
@@ -61,7 +68,7 @@ export async function getExploreArticles(page) {
   const response = await makeRequest(url, "GET", null, {
     "Content-Type": "application/json",
   });
-  return await response.json();
+  return response;
 }
 
 export async function getUserArticles(page) {
@@ -95,5 +102,11 @@ export async function getArticle(id) {
 export async function updateArticle(id, formData) {
   const url = `/blogs/${id}?_method=PATCH`;
   const response = await makeRequest(url, "POST", formData, {});
+  return response;
+}
+
+export async function getArticleRecommendations(id) {
+  const url = `/blogs/${id}/recommendations`;
+  const response = await makeRequest(url, "GET", null);
   return response;
 }

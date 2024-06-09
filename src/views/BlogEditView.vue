@@ -3,6 +3,9 @@ import NavBarComponent from '@/components/NavBarComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import { ref } from 'vue';
 import persisty from 'persisty'
+import { newArticle } from '@/utils/requests'
+import { showToast } from '@/utils/toast';
+import router from '@/router';
 
 
 const editorConfig = {
@@ -29,13 +32,21 @@ function handleMainImageUpload(event) {
     if (blogMainImage.value) blogMainImageURL.value = URL.createObjectURL(blogMainImage.value)
 }
 
-function submitForm() {
+async function submitForm() {
     const formData = new FormData();
     formData.append('title', blogTitle.value)
-    formData.append('title', blogTitle.value)
-    formData.append('title', blogTitle.value)
-    formData.append('title', blogTitle.value)
-    formData.append('title', blogTitle.value)
+    formData.append('thumbnail', blogThumbnail.value)
+    formData.append('main_image', blogMainImage.value)
+    formData.append('description', blogDescription.value)
+    formData.append('content', blogContent.value)
+
+    let response = await newArticle(formData);
+    if (!response.ok) {
+        showToast("Error", "an error occurred", false)
+    }
+    response = await response.json();
+    showToast("Message", response.message, response.status);
+    if (response.status) router.push('/blog/' + response.data.id);
 }
 
 </script>
@@ -92,7 +103,6 @@ function submitForm() {
                 <div class="prose prose-gray dark:prose-invert">
                     <froala id="edit" :tag="'textarea'" :config="editorConfig" v-model:value="blogContent"></froala>
                 </div>
-                {{ blogContent }}
             </div>
             <div>
                 <button class="w-full bg-blue-900 text-slate-50 p-2 rounded-md hover:bg-blue-700"
@@ -101,14 +111,14 @@ function submitForm() {
         </div>
         <div class="space-y-6">
             <div class="grid gap-2">
-                <h1 class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                <h1 class="text-lg font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                     Preview
                 </h1>
-                <h1>{{ blogTitle }}</h1>
-                <div>
-                    <img v-if="blogMainImage" :src="blogMainImageURL" :alt="blogTitle">
+                <h1 class="text-6xl font-bold">{{ blogTitle }}</h1>
+                <div class="pt-6 w-full">
+                    <img v-if="blogMainImage" :src="blogMainImageURL" :alt="blogTitle" class="rounded-lg">
                 </div>
-                <div>
+                <div class="text-slate-400 pb-4 leading-6">
                     {{ blogDescription }}
                 </div>
                 <div>

@@ -78,3 +78,8 @@ export async function deleteArticle(id) {
   });
   return response;
 }
+
+export async function newArticle(formData) {
+  const response = await makeRequest("/blogs", "POST", formData, {});
+  return response;
+}

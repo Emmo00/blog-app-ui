@@ -7,7 +7,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 const isLoggedIn = ref(auth.isAuthenticated);
-const onDashboard = ref(location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/blog'))
+const onDashboard = ref(location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/blog/new'))
 
 async function handleLogout() {
     await logout();
@@ -37,10 +37,10 @@ async function handleLogout() {
                 </form> -->
                 <div v-if="isLoggedIn">
                     <RouterLink to="/dashboard" v-if="!onDashboard"
-                        class="bg-gray-800 hover:bg-gray-700 text-white rounded-md py-2 px-4 transition-colors">
+                        class="bg-gray-800 hover:bg-gray-700 text-white rounded-md py-2 px-4 mx-4 transition-colors">
                         Dashboard
                     </RouterLink>
-                    <button @click="handleLogout" v-else
+                    <button @click="handleLogout" v-if="auth.isAuthenticated"
                         class="bg-red-700 hover:bg-orange-600 text-white rounded-md py-2 px-4 transition-colors">
                         logout
                     </button>

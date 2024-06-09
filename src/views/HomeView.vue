@@ -3,6 +3,25 @@ import NavBarComponent from "@/components/NavBarComponent.vue";
 import BlogPreviewComponent from '@/components/BlogPreviewComponent.vue';
 import PaginationComponent from '@/components/PaginationComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
+import { getExploreArticles } from '@/utils/requests'
+import { ref } from 'vue';
+
+const exploreBlogPosts = ref([]);
+
+async function populateHomePage() {
+    const response = await getExploreArticles();
+    let blogsPosts = response.data.data;
+    blogsPosts = blogsPosts.map((blog) => {
+        blog.thumbnail = import.meta.env.VITE_SERVER_URL + '/storage/' + blog.thumbnail;
+        return blog
+    })
+    console.log(blogsPosts);
+    exploreBlogPosts.value = blogsPosts;
+
+}
+
+populateHomePage()
+
 </script>
 
 <template>
@@ -11,12 +30,8 @@ import FooterComponent from '@/components/FooterComponent.vue';
         <section class="mb-8">
             <h2 class="text-2xl font-bold mb-4">Explore</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <BlogPreviewComponent />
-                <BlogPreviewComponent />
-                <BlogPreviewComponent />
-                <BlogPreviewComponent />
-                <BlogPreviewComponent />
-                <BlogPreviewComponent />
+                <BlogPreviewComponent v-for="blogPost in exploreBlogPosts" :key="blogPost.id" :title="blogPost.title"
+                    :description="blogPost.description" :thumbnail="blogPost.thumbnail" />
             </div>
             <PaginationComponent />
         </section>

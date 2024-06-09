@@ -4,11 +4,11 @@ import FooterComponent from '@/components/FooterComponent.vue';
 import { ref } from 'vue';
 import persisty from 'persisty'
 
-console.log(import.meta.env.VITE_SERVER_URL)
+
 const editorConfig = {
     key: "8JF3bB2B6A4D2B3E2C1zdgmoxmcjmC-7iB2zA-13iG5G4E3E3A1B8D6D4F4F4==",
     toolbarButtons: [["bold", "italic", "underline",], ["insertImage", 'insertVideo', 'codeView', 'code']],
-    imageUploadURL: import.meta.env.VITE_SERVER_URL + '/images',
+    imageUploadURL: import.meta.env.VITE_SERVER_URL + '/api/images',
     imageUploadMethod: 'POST',
     imageUploadParams: { 'user_id': persisty.user_id }
 }

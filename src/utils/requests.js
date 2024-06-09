@@ -1,7 +1,7 @@
 import persisty from "persisty";
 
 const API_TOKEN = persisty.api_token;
-const BASE_URL = import.meta.env.VITE_SERVER_URL + '/api';
+const BASE_URL = import.meta.env.VITE_SERVER_URL + "/api";
 
 async function makeRequest(url, method, body, otherHeaders) {
   return await fetch(BASE_URL + url, {
@@ -37,13 +37,22 @@ export async function login(email, password) {
 }
 
 export async function getExploreArticles() {
-  const response = await makeRequest(
-    "/blogs/explore",
-    "GET",
-    null,
-    {
-      "Content-Type": "application/json",
-    }
-  );
+  const response = await makeRequest("/blogs/explore", "GET", null, {
+    "Content-Type": "application/json",
+  });
   return await response.json();
+}
+
+export async function getUserArticles() {
+  const response = await makeRequest("/blogs", "GET", null, {
+    "Content-Type": "application/json",
+  });
+  return response;
+}
+
+export async function deleteArticle(id) {
+  const response = await makeRequest(`/blogs/${id}`, "DELETE", null, {
+    "Content-Type": "application/json",
+  });
+  return response;
 }

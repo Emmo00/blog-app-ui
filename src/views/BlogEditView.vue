@@ -3,11 +3,12 @@ import NavBarComponent from '@/components/NavBarComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import { ref } from 'vue';
 import persisty from 'persisty'
-import { newArticle } from '@/utils/requests'
+import { newArticle, getArticle, updateArticle } from '@/utils/requests'
 import { showToast } from '@/utils/toast';
 import router from '@/router';
+import { useRoute } from 'vue-router';
 
-
+const route = useRoute();
 const editorConfig = {
     key: "8JF3bB2B6A4D2B3E2C1zdgmoxmcjmC-7iB2zA-13iG5G4E3E3A1B8D6D4F4F4==",
     toolbarButtons: [["bold", "italic", "underline",], ["insertImage", 'insertVideo', 'codeView', 'code']],
@@ -15,6 +16,11 @@ const editorConfig = {
     imageUploadMethod: 'POST',
     imageUploadParams: { 'user_id': persisty.user_id }
 }
+
+if (route.params.id) {
+    populateForm(route.params.id)
+}
+
 const blogTitle = ref('');
 const blogThumbnail = ref();
 const blogMainImage = ref();
@@ -22,6 +28,19 @@ const blogMainImageURL = ref('')
 const blogDescription = ref("");
 const blogContent = ref('')
 
+async function populateForm(id) {
+    console.log('populating')
+    const response = await getArticle(id);
+    if (!response.ok) {
+        router.push('/404')
+    }
+    const article = (await response.json()).data;
+
+    blogTitle.value = article.title;
+    blogMainImageURL.value = import.meta.env.VITE_SERVER_URL + '/storage/' + article.main_image;
+    blogDescription.value = article.description
+    blogContent.value = article.content;
+}
 
 function handleThumbnailUpload(event) {
     blogThumbnail.value = event.target.files[0];
@@ -32,7 +51,7 @@ function handleMainImageUpload(event) {
     if (blogMainImage.value) blogMainImageURL.value = URL.createObjectURL(blogMainImage.value)
 }
 
-async function submitForm() {
+async function submitUpdateForm() {
     const formData = new FormData();
     formData.append('title', blogTitle.value)
     formData.append('thumbnail', blogThumbnail.value)
@@ -40,13 +59,34 @@ async function submitForm() {
     formData.append('description', blogDescription.value)
     formData.append('content', blogContent.value)
 
+    console.log(formData)
+    console.log(blogTitle.value)
+    let response = await updateArticle(route.params.id, formData);
+    if (!response.ok) {
+        showToast("Error", "an error occurred", false)
+    }
+    response = await response.json();
+    showToast("Message", response.message, response.status);
+    if (response.status) router.push('/blogs/' + response.data.id);
+}
+
+async function submitForm() {
+    if (route.params.id) {
+        return submitUpdateForm()
+    }
+    const formData = new FormData();
+    formData.append('title', blogTitle.value)
+    formData.append('thumbnail', blogThumbnail.value)
+    formData.append('main_image', blogMainImage.value)
+    formData.append('description', blogDescription.value)
+    formData.append('content', blogContent.value)
     let response = await newArticle(formData);
     if (!response.ok) {
         showToast("Error", "an error occurred", false)
     }
     response = await response.json();
     showToast("Message", response.message, response.status);
-    if (response.status) router.push('/blog/' + response.data.id);
+    if (response.status) router.push('/blogs/' + response.data.id);
 }
 
 </script>
@@ -116,7 +156,8 @@ async function submitForm() {
                 </h1>
                 <h1 class="text-6xl font-bold">{{ blogTitle }}</h1>
                 <div class="w-full">
-                    <img v-if="blogMainImage" :src="blogMainImageURL" :alt="blogTitle" class="rounded-lg mb-4 w-full h-[400px] object-cover">
+                    <img v-if="blogMainImageURL" :src="blogMainImageURL" :alt="blogTitle"
+                        class="rounded-lg mb-4 w-full h-[400px] object-cover">
                 </div>
                 <div class="text-slate-400 pb-4 leading-6">
                     {{ blogDescription }}

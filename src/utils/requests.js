@@ -91,3 +91,9 @@ export async function getArticle(id) {
   });
   return response;
 }
+
+export async function updateArticle(id, formData) {
+  const url = `/blogs/${id}?_method=PATCH`;
+  const response = await makeRequest(url, "POST", formData, {});
+  return response;
+}

@@ -115,8 +115,8 @@ async function submitForm() {
                     Preview
                 </h1>
                 <h1 class="text-6xl font-bold">{{ blogTitle }}</h1>
-                <div class="pt-6 w-full">
-                    <img v-if="blogMainImage" :src="blogMainImageURL" :alt="blogTitle" class="rounded-lg">
+                <div class="w-full">
+                    <img v-if="blogMainImage" :src="blogMainImageURL" :alt="blogTitle" class="rounded-lg mb-4 w-full h-[400px] object-cover">
                 </div>
                 <div class="text-slate-400 pb-4 leading-6">
                     {{ blogDescription }}

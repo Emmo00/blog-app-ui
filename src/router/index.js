@@ -33,17 +33,17 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: "/blog/edit",
-      name: "Blog Edit",
-      component: BlogEditView,
-    },
-    {
-      path: "/blog/new",
+      path: "/blogs/new",
       name: "New Blog",
       component: BlogEditView,
     },
+    -{
+      path: "/blogs/edit/:id",
+      name: "Edit Blog",
+      component: BlogEditView,
+    },
     {
-      path: "/blog/:id",
+      path: "/blogs/:id",
       name: "Blog",
       component: BlogView,
     },
@@ -59,7 +59,7 @@ router.beforeEach(async (to, from, next) => {
   const isLoggedIn = await loggedIn();
   if (isLoggedIn) auth.login();
   else auth.logout();
-  next()
+  next();
 });
 
 export default router;

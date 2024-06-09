@@ -83,3 +83,11 @@ export async function newArticle(formData) {
   const response = await makeRequest("/blogs", "POST", formData, {});
   return response;
 }
+
+export async function getArticle(id) {
+  const url = `/blogs/${id}`;
+  const response = await makeRequest(url, "GET", null, {
+    "Content-Type": "application/json",
+  });
+  return response;
+}

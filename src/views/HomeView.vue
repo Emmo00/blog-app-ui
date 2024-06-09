@@ -32,7 +32,7 @@ populateHomePage()
         <section class="mb-8">
             <h2 class="text-2xl font-bold mb-4">Explore</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <BlogPreviewComponent v-for="blogPost in exploreBlogPosts" :key="blogPost.id" :title="blogPost.title"
+                <BlogPreviewComponent v-for="blogPost in exploreBlogPosts" :key="blogPost.id" :id="blogPost.id" :title="blogPost.title"
                     :description="blogPost.description" :thumbnail="blogPost.thumbnail" />
             </div>
             <PaginationComponent :pagination="pagination" @new-page="populateHomePage"/>

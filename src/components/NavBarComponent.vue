@@ -7,7 +7,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 const isLoggedIn = ref(auth.isAuthenticated);
-const onDashboard = ref(location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/blog/new'))
+const onDashboard = ref(location.pathname.startsWith('/dashboard'))
 
 async function handleLogout() {
     await logout();

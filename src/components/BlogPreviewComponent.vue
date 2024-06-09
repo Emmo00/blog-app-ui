@@ -12,8 +12,11 @@ const props = defineProps({
     description: {
         type: String,
         required: true
+    },
+    id: {
+        type: String,
+        required: true
     }
-
 })
 
 
@@ -25,7 +28,7 @@ const props = defineProps({
         <div class="p-4">
             <h3 class="text-lg font-bold mb-2">{{ title }}</h3>
             <p class="text-gray-500 mb-4">{{ description }}</p>
-            <RouterLink class="text-blue-500 hover:underline" to="#">
+            <RouterLink class="text-blue-500 hover:underline" :to="'/blogs/' + id">
                 Read More
             </RouterLink>
         </div>

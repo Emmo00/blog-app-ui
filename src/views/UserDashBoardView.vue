@@ -51,7 +51,7 @@ onMounted(() => {
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-2xl font-bold mb-4">Your Articles</h2>
                     <RouterLink class="bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 px-4 transition-colors"
-                        to="/blog/new">
+                        to="/blogs/new">
                         New Article
                     </RouterLink>
                 </div>

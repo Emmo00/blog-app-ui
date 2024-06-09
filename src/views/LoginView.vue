@@ -3,11 +3,12 @@ import FooterComponent from '@/components/FooterComponent.vue';
 import { login } from '@/utils/requests';
 import { showToast } from '@/utils/toast';
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import persisty from 'persisty';
 import auth from '@/utils/auth';
 
 const router = useRouter()
+const route = useRoute()
 const email = ref('');
 const password = ref('');
 
@@ -18,7 +19,7 @@ async function handleSubmit() {
     if (response.status && response.token) {
         auth.login()
         persisty.api_token = response.token;
-        router.push('/')
+        router.push(route.query.redirect ?? '/')
         setTimeout(() => location.reload(), 1000)
     }
 }

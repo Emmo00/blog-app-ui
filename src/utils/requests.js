@@ -36,15 +36,37 @@ export async function login(email, password) {
   return await response.json();
 }
 
-export async function getExploreArticles() {
-  const response = await makeRequest("/blogs/explore", "GET", null, {
+export async function logout() {
+  return await makeRequest("/auth/logout", "GET", null);
+}
+
+export async function register(name, email, password) {
+  const response = await makeRequest(
+    `/auth/register`,
+    "POST",
+    JSON.stringify({
+      name,
+      email,
+      password,
+    }),
+    {
+      "Content-Type": "application/json",
+    }
+  );
+  return response;
+}
+
+export async function getExploreArticles(page) {
+  const url = `/blogs/explore?page=${page ?? 1}`;
+  const response = await makeRequest(url, "GET", null, {
     "Content-Type": "application/json",
   });
   return await response.json();
 }
 
-export async function getUserArticles() {
-  const response = await makeRequest("/blogs", "GET", null, {
+export async function getUserArticles(page) {
+  const url = `/blogs?page=${page ?? 1}`;
+  const response = await makeRequest(url, "GET", null, {
     "Content-Type": "application/json",
   });
   return response;

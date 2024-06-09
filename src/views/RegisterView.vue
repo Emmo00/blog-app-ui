@@ -1,5 +1,34 @@
 <script setup>
 import FooterComponent from '@/components/FooterComponent.vue';
+import { register } from '@/utils/requests';
+import auth from '@/utils/auth';
+import { showToast } from '@/utils/toast';
+import { ref } from 'vue';
+import persisty from 'persisty';
+import { useRoute, useRouter } from 'vue-router';
+
+const name = ref('');
+const email = ref('');
+const password = ref('');
+const route = useRoute();
+const router = useRouter();
+
+async function handleSubmit() {
+    try {
+        let response = await register(name.value, email.value, password.value);
+        response = await response.json()
+        showToast("Authentication", response.message, response.status)
+        if (response.status && response.token) {
+            auth.login()
+            persisty.api_token = response.token;
+            router.push(route.query.redirect ?? '/')
+            setTimeout(() => location.reload(), 1000)
+        }
+    } catch (err) {
+        showToast('Error', err, false)
+        console.error(err);
+    }
+}
 </script>
 
 <template>
@@ -16,7 +45,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
                         </label>
                         <input
                             class="flex h-10 w-full border border-input text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-100 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            id="name" type="text" value="" name="name" />
+                            id="name" type="text" value="" name="name" v-model="name" />
                     </div>
                     <div class="mb-4">
                         <label
@@ -26,7 +55,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
                         </label>
                         <input
                             class="flex h-10 w-full border border-input text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-100 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            id="email" name="email" type="email" />
+                            id="email" name="email" type="email" v-model="email" />
                     </div>
                     <div class="mb-4">
                         <label
@@ -36,12 +65,12 @@ import FooterComponent from '@/components/FooterComponent.vue';
                         </label>
                         <input
                             class="flex h-10 w-full border border-input text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-100 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            id="password" type="password" value="" name="password" />
+                            id="password" type="password" value="" name="password" v-model="password" />
                     </div>
                     <div class="flex justify-end space-x-2">
                         <button
                             class="bg-blue-950 p-2 text-slate-50 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-                            type="submit">
+                            type="submit" @click.prevent="handleSubmit">
                             Register
                         </button>
                     </div>

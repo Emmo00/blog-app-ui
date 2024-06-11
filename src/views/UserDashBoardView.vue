@@ -22,10 +22,6 @@ async function populateUserDashboard(page) {
         let blogsPosts = response.data.data;
         pagination.value = response.data;
         if (blogsPosts.length === 0) noBlogPosts.value = true
-        blogsPosts = blogsPosts.map((blog) => {
-            blog.thumbnail =  blog.thumbnail;
-            return blog
-        })
         userBlogPosts.value = blogsPosts;
     } catch (err) {
         showToast("Error", err, false);
@@ -61,7 +57,7 @@ onMounted(() => {
                         :title="blogPost.title" :description="blogPost.description" :thumbnail="blogPost.thumbnail"
                         @blog-post-deleted="populateUserDashboard" />
                 </div>
-                <PaginationComponent v-if="!noBlogPosts" :pagination="pagination" @new-page="populateUserDashboard"/>
+                <PaginationComponent v-if="!noBlogPosts" :pagination="pagination" @new-page="populateUserDashboard" />
             </section>
         </main>
         <FooterComponent />

@@ -7,7 +7,7 @@ const props = defineProps(['id'])
 async function populateRecommendations() {
     const response = await getArticleRecommendations(props.id);
     recommendations.value = (await response.json()).data.map(article => {
-        article.thumbnail = import.meta.env.VITE_SERVER_URL + '/storage/' + article.thumbnail
+        article.thumbnail = article.thumbnail
         return article
     });
 }

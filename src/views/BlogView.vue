@@ -28,7 +28,7 @@ onMounted(async () => {
   const article = (await response.json()).data
   title.value = article.title
   content.value = article.content
-  mainImage.value = import.meta.env.VITE_SERVER_URL + '/storage/' + article.main_image;
+  mainImage.value =  article.main_image;
   description.value = article.description
   pubDate.value = 'Published on ' + moment(article.created_at).format('LL')
 })

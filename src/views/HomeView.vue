@@ -16,10 +16,10 @@ async function populateHomePage(page) {
         showToast("Error", "an error occurred", false)
         return
     }
-    let blogsPosts = response.data.data;
+    let blogsPosts = (await response.json()).data.data;
     pagination.value = response.data
     blogsPosts = blogsPosts.map((blog) => {
-        blog.thumbnail = import.meta.env.VITE_SERVER_URL + '/storage/' + blog.thumbnail;
+        blog.thumbnail =  blog.thumbnail;
         return blog
     })
     console.log(blogsPosts);

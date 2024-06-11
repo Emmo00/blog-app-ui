@@ -37,7 +37,7 @@ async function populateForm(id) {
     const article = (await response.json()).data;
 
     blogTitle.value = article.title;
-    blogMainImageURL.value = import.meta.env.VITE_SERVER_URL + '/storage/' + article.main_image;
+    blogMainImageURL.value =  article.main_image;
     blogDescription.value = article.description
     blogContent.value = article.content;
 }

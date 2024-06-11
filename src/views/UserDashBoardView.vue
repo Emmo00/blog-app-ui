@@ -23,7 +23,7 @@ async function populateUserDashboard(page) {
         pagination.value = response.data;
         if (blogsPosts.length === 0) noBlogPosts.value = true
         blogsPosts = blogsPosts.map((blog) => {
-            blog.thumbnail = import.meta.env.VITE_SERVER_URL + '/storage/' + blog.thumbnail;
+            blog.thumbnail =  blog.thumbnail;
             return blog
         })
         userBlogPosts.value = blogsPosts;

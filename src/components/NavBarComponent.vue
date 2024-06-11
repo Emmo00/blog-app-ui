@@ -11,6 +11,7 @@ const onDashboard = ref(location.pathname.startsWith('/dashboard'))
 
 async function handleLogout() {
     await logout();
+    auth.logout();
     await router.push('/');
     location.reload()
 }

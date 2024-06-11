@@ -14,6 +14,8 @@ const route = useRoute()
 const email = ref('');
 const password = ref('');
 
+if (auth.isAuthenticated) await router.push(route.query.redirect ?? '/')
+
 async function handleSubmit() {
     const response = await login(email.value, password.value);
     console.log(response, response.status)

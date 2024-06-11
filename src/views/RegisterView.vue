@@ -14,6 +14,7 @@ const route = useRoute();
 const router = useRouter();
 
 document.title = "Register - MyBlog";
+if (auth.isAuthenticated) router.push(route.query.redirect ?? '/')
 
 async function handleSubmit() {
     try {

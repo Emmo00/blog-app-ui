@@ -13,6 +13,8 @@ const password = ref('');
 const route = useRoute();
 const router = useRouter();
 
+document.title = "Register - MyBlog";
+
 async function handleSubmit() {
     try {
         let response = await register(name.value, email.value, password.value);
@@ -73,6 +75,9 @@ async function handleSubmit() {
                             type="submit" @click.prevent="handleSubmit">
                             Register
                         </button>
+                    </div>
+                    <div class="w-full text-center">Have an account? <RouterLink to="/login" class="text-blue-500">
+                            Login</RouterLink>
                     </div>
                 </form>
             </div>

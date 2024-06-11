@@ -8,6 +8,8 @@ import { showToast } from '@/utils/toast';
 import router from '@/router';
 import { useRoute } from 'vue-router';
 
+document.title = 'Edit - MyBlog'
+
 const route = useRoute();
 const editorConfig = {
     key: "8JF3bB2B6A4D2B3E2C1zdgmoxmcjmC-7iB2zA-13iG5G4E3E3A1B8D6D4F4F4==",
@@ -37,7 +39,8 @@ async function populateForm(id) {
     const article = (await response.json()).data;
 
     blogTitle.value = article.title;
-    blogMainImageURL.value =  article.main_image;
+    document.title = `Edit - ${article.title}`
+    blogMainImageURL.value = article.main_image;
     blogDescription.value = article.description
     blogContent.value = article.content;
 }

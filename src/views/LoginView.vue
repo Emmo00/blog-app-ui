@@ -7,6 +7,8 @@ import { useRouter, useRoute } from 'vue-router';
 import persisty from 'persisty';
 import auth from '@/utils/auth';
 
+document.title = "Login - MyBlog";
+
 const router = useRouter()
 const route = useRoute()
 const email = ref('');

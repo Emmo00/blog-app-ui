@@ -27,8 +27,9 @@ onMounted(async () => {
   }
   const article = (await response.json()).data
   title.value = article.title
+  document.title = article.title
   content.value = article.content
-  mainImage.value =  article.main_image;
+  mainImage.value = article.main_image;
   description.value = article.description
   pubDate.value = 'Published on ' + moment(article.created_at).format('LL')
 })

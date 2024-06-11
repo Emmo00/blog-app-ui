@@ -8,7 +8,9 @@ import { ref } from 'vue';
 import { showToast } from "@/utils/toast";
 
 const exploreBlogPosts = ref([]);
-const pagination = ref({})
+const pagination = ref({});
+
+document.title = "Home - MyBlog"
 
 async function populateHomePage(page) {
     let response = await getExploreArticles(page);

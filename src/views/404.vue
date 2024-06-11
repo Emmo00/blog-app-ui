@@ -2,6 +2,7 @@
 import NavBarComponent from '@/components/NavBarComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 
+document.title = "404 Error - MyBlog"
 </script>
 <template>
     <div class="flex flex-col min-h-screen justify-between align-bottom">

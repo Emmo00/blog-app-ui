@@ -13,6 +13,8 @@ const noBlogPosts = ref(false);
 const router = useRouter();
 const pagination = ref({})
 
+document.title = "Dashboard - MyBlog";
+
 async function populateUserDashboard(page) {
     try {
         let response = await getUserArticles(page);

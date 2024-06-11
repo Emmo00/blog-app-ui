@@ -23,8 +23,8 @@ async function handleSubmit() {
         if (response.status && response.token) {
             auth.login()
             persisty.api_token = response.token;
-            router.push(route.query.redirect ?? '/')
-            setTimeout(() => location.reload(), 1000)
+            await router.push(route.query.redirect ?? '/')
+            setTimeout(() => location.reload(), 100)
         }
     } catch (err) {
         showToast('Error', err, false)

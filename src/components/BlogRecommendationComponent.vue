@@ -6,10 +6,7 @@ const recommendations = ref([]);
 const props = defineProps(['id'])
 async function populateRecommendations() {
     const response = await getArticleRecommendations(props.id);
-    recommendations.value = (await response.json()).data.map(article => {
-        article.thumbnail = article.thumbnail
-        return article
-    });
+    recommendations.value = (await response.json()).data
 }
 
 populateRecommendations()
@@ -22,7 +19,7 @@ populateRecommendations()
                     :src="article.thumbnail" alt="Related Post 1" width="80" height="80" class="rounded-md object-cover"
                     style="aspect-ratio:80/80;object-fit:cover" />
                 <div>
-                    <h3 class="text-base font-medium"><a href="#">{{ article.title }}</a></h3>
+                    <h3 class="text-base font-medium"><a :href="'/blogs/' + article.id">{{ article.title }}</a></h3>
                     <p class="text-gray-500 dark:text-gray-400 text-sm">{{ article.description }}</p>
                 </div>
             </div>
